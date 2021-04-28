@@ -1,0 +1,2 @@
+Prints "Hello, Hurd!" to the standard out,
+without linking to glibc (or anything else).
