@@ -1,7 +1,6 @@
 #include <mach/mach.h>
 
 #include "global-ports.h"
-#include "util.h"
 #include "mach_msg.h"
 
 kern_return_t
