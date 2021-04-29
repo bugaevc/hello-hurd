@@ -28,6 +28,7 @@ main ()
           return 1;
         }
       written += written_this_time;
+      data += written_this_time;
     }
 
   return 0;
