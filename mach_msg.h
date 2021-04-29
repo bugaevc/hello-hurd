@@ -8,4 +8,4 @@ mach_msg_ (mach_msg_header_t *msg,
            mach_port_t rcv_name,
            mach_msg_timeout_t timeout,
            mach_port_t notify)
-  __attribute__((naked));
+  __attribute__((naked, noinline, cdecl));

@@ -11,7 +11,13 @@ mach_msg_ (mach_msg_header_t *msg,
            mach_msg_timeout_t timeout,
            mach_port_t notify)
 {
-  __asm__ volatile ("movl $-25, %eax" "\n\t"
+  __asm__ volatile ("movl $-25, %%eax" "\n\t"
                     "lcall $0x7, $0" "\n\t"
-                    "ret");
+                    "ret"
+                    :
+                    : "m" (msg), "m" (option),
+                      "m" (send_size), "m" (rcv_size),
+                      "m" (rcv_name), "m" (timeout),
+                      "m" (notify)
+                    : "eax", "memory");
 }
