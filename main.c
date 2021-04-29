@@ -14,7 +14,6 @@ main ()
   error_t err;
 
   data = message;
-  written = 0;
 
   for (written = 0; written < sizeof message - 1;)
     {
@@ -22,12 +21,12 @@ main ()
                       sizeof message - 1 - written,
                       -1, &written_this_time);
       if (err)
-      {
-        io_write (stderr_io, error_message,
-                  sizeof error_message - 1,
-                  -1, &written_this_time);
-        return 1;
-      }
+        {
+          io_write (stderr_io, error_message,
+                    sizeof error_message - 1,
+                    -1, &written_this_time);
+          return 1;
+        }
       written += written_this_time;
     }
 
