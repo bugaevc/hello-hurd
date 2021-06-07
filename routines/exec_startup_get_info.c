@@ -37,27 +37,37 @@ exec_startup_get_info (mach_port_t bootstrap_port,
     int flags;
     mach_msg_type_long_t argv_type;
     union {
+#ifndef TINIER
         char argv[2048];
+#endif
         char *argvp;
     };
     mach_msg_type_long_t envp_type;
     union {
+#ifndef TINIER
         char envp[2048];
+#endif
         char *envpp;
     };
     mach_msg_type_long_t dtable_type;
     union {
+#ifndef TINIER
         mach_port_t dtable[512];
+#endif
         mach_port_t *dtablep;
     };
     mach_msg_type_long_t port_array_type;
     union {
+#ifndef TINIER
         mach_port_t port_array[512];
+#endif
         mach_port_t *port_array_p;
     };
     mach_msg_type_long_t int_array_type;
     union {
+#ifndef TINIER
         int int_array[512];
+#endif
         int *int_array_p;
     };
   };
@@ -83,6 +93,7 @@ exec_startup_get_info (mach_port_t bootstrap_port,
                    sizeof message.request, sizeof message.response,
                    reply_port, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
 
+#ifndef TINIER
   if (ret)
     return ret;
   if (message.response.ret_code)
@@ -189,6 +200,10 @@ exec_startup_get_info (mach_port_t bootstrap_port,
       response = (const struct response *) ((const char *) response
                   - (sizeof response->int_array - sizeof response->int_array_p));
     }
+#else
+  *dtable = message.response.dtablep;
+  *port_array = message.response.port_array_p;
+#endif
 
   return KERN_SUCCESS;
 }

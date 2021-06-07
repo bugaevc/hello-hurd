@@ -20,6 +20,10 @@ main ()
       err = io_write (stdout_io, data,
                       sizeof message - 1 - written,
                       -1, &written_this_time);
+#ifdef TINIER
+      return 0;
+#endif
+
       if (err)
         {
           io_write (stderr_io, error_message,

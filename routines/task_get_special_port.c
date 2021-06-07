@@ -47,10 +47,12 @@ task_get_special_port (task_t task, int which_port, mach_port_t *port)
                    sizeof message.request, sizeof message.response,
                    reply_port, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
 
+#ifndef TINIER
   if (ret)
     return ret;
   if (message.response.ret_code)
     return message.response.ret_code;
+#endif
 
   *port = message.response.port;
 

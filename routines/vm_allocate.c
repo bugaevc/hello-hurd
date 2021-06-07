@@ -66,10 +66,12 @@ vm_allocate (task_t task, vm_address_t *address,
                    sizeof message.request, sizeof message.response,
                    reply_port, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
 
+#ifndef TINIER
   if (ret)
     return ret;
   if (message.response.ret_code)
     return message.response.ret_code;
+#endif
 
   *address = message.response.address;
   return KERN_SUCCESS;

@@ -54,10 +54,12 @@ proc_mark_exit (process_t proc, int status, int sigcode)
                    sizeof message.request, sizeof message.response,
                    reply_port, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
 
+#ifndef TINIER
   if (ret)
     return ret;
   if (message.response.ret_code)
     return message.response.ret_code;
+#endif
 
   return KERN_SUCCESS;
 }

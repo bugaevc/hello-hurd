@@ -11,6 +11,10 @@ tiny: CFLAGS += -fomit-frame-pointer -fno-exceptions -fno-asynchronous-unwind-ta
 tiny: hello-hurd
 	strip $^
 
+tinier: CFLAGS += -D TINIER
+tinier: tiny
+	bash extra-strip.sh hello-hurd
+
 clean:
 	rm -f hello-hurd $(objects) $(routine_objects)
 

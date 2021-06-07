@@ -6,7 +6,10 @@
 #include "main.h"
 
 mach_port_t reply_port;
+
+#ifndef TINIER
 task_t task_self;
+#endif
 
 process_t proc;
 io_t stdout_io, stderr_io;
@@ -16,6 +19,9 @@ startup ()
 {
   error_t err;
 
+#ifdef TINIER
+  task_t task_self;
+#endif
   mach_port_t bootstrap_port;
 
   vm_address_t user_entry;
@@ -39,8 +45,10 @@ startup ()
   task_self = (mach_task_self) ();
 
   err = task_get_bootstrap_port (task_self, &bootstrap_port);
+#ifndef TINIER
   if (err)
     return err;
+#endif
 
   err = exec_startup_get_info (bootstrap_port,
                                &user_entry,
@@ -52,8 +60,10 @@ startup ()
                                &dtable, &dtable_size,
                                &port_array, &port_array_size,
                                &int_array, &int_array_size);
+#ifndef TINIER
   if (err)
     return err;
+#endif
 
   proc = port_array[INIT_PORT_PROC];
   stdout_io = dtable[1];
@@ -71,14 +81,18 @@ _start ()
   int status;
 
   err = startup ();
+#ifndef TINIER
   if (err)
     __builtin_trap ();
+#endif
 
   status = main ();
 
   status = W_EXITCODE (status, 0);
   (void) proc_mark_exit (proc, status, 0);
-  (void) task_terminate (task_self);
 
+#ifndef TINIER
+  (void) task_terminate (task_self);
+#endif
   __builtin_trap ();
 }

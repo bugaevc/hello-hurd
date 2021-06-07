@@ -35,10 +35,12 @@ task_terminate (task_t task)
   ret = mach_msg_ (&message.header, MACH_SEND_MSG|MACH_RCV_MSG,
                    sizeof message.request, sizeof message.response,
                    reply_port, MACH_MSG_TIMEOUT_NONE, MACH_PORT_NULL);
+#ifndef TINIER
   if (ret)
     return ret;
   if (message.response.ret_code)
     return message.response.ret_code;
+#endif
 
   return KERN_SUCCESS;
 }
