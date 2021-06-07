@@ -1,2 +1,16 @@
 Prints "Hello, Hurd!" to the standard out,
 without linking to glibc (or anything else).
+
+
+* 'make' builds the full, regular version.
+  (.text size: 3102, file size: 4852)
+
+* 'make tiny' builds a size-optimized version,
+  making use of '-Os' and other compiler flags.
+  (.text size: 1650, file size: 2032)
+
+* 'make tinier' builds an extra-tiny version
+  without error handling and other inessential
+  stuff, and also strips the section headers
+  from the resulting ELF.
+  (.text size: 427, file size: 578)
