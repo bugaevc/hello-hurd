@@ -3,7 +3,7 @@ without linking to glibc (or anything else).
 
 
 * 'make' builds the full, regular version.
-  (.text size: 3102, file size: 4852)
+  (.text size: 3102, file size: 4548)
 
 * 'make tiny' builds a size-optimized version,
   making use of '-Os' and other compiler flags.
@@ -14,3 +14,8 @@ without linking to glibc (or anything else).
   stuff, and also strips the section headers
   from the resulting ELF.
   (.text size: 427, file size: 578)
+
+
+Debug symbols are built into a separate file,
+'hello-hurd.debug'. Use 'symbol-file' in GDB
+to load it.
