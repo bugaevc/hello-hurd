@@ -11,9 +11,26 @@ mach_msg_ (mach_msg_header_t *msg,
            mach_msg_timeout_t timeout,
            mach_port_t notify)
 {
+#if defined (__x86_64__)
+  __asm__ volatile ("syscall" "\n\t"
+                    "ret"
+                    :
+                    : "a" (-25)
+                    : "memory");
+#elif defined (__i386__)
   __asm__ volatile ("lcall $0x7, $0" "\n\t"
                     "ret"
                     :
                     : "a" (-25)
                     : "memory");
+#elif defined (__aarch64__)
+  register int trap_x8 asm ("w8") = -25;
+  __asm__ volatile ("svc #0" "\n\t"
+                    "ret"
+                    :
+                    : "r" (trap_x8)
+                    : "memory");
+#else
+#error Don't know how to make syscalls on this architecture
+#endif
 }
